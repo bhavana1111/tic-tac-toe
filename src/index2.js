@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -16,13 +15,10 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            squares: Array(9).fill(null),//
-            //mat:TwoDimensional(this.state.squares,3),
+            squares: Array(16).fill(null),//
             xIsNext: true,
         };
-        console.log(this.state.mat);
     }
-   
 
     handleClick(i) {
         const squares = this.state.squares.slice();
@@ -59,13 +55,38 @@ class Board extends React.Component {
         }
 
         //const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-        const n=3;
+
         return (
-            
             <div>
+                <button onClick={'index1.js'}>button1</button>
+                <button>button2</button>
+                <button>button3</button>
                 <div className="status">{status}</div>
-                {generatesquare(3)}
+                <div className="board-row">
+                    {this.renderSquare(0)}
+                    {this.renderSquare(1)}
+                    {this.renderSquare(2)}
+                    {this.renderSquare(3)}
                 </div>
+                <div className="board-row">
+                    {this.renderSquare(4)}
+                    {this.renderSquare(5)}
+                    {this.renderSquare(6)}
+                    {this.renderSquare(7)}
+                </div>
+                <div className="board-row">
+                    {this.renderSquare(8)}
+                    {this.renderSquare(9)}
+                    {this.renderSquare(10)}
+                    {this.renderSquare(11)}
+                </div>
+                <div className="board-row">
+                    {this.renderSquare(12)}
+                    {this.renderSquare(13)}
+                    {this.renderSquare(14)}
+                    {this.renderSquare(15)}
+                </div>
+            </div>
         );
     }
 }
@@ -90,54 +111,38 @@ class Game extends React.Component {
 
 ReactDOM.render(
     <Game />,
-    document.getElementById('root')
+    document.getElementById('root1')
 );
 function calculateWinner(squares) {
     const lines = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
+        [0, 1, 2,3],
+        [4, 5,6,7],
+        [8, 9, 10,11],
+        [12, 13,14,15],
+        [0, 4, 8,12],
+        [1, 5, 9,13],
+        [2,6,10,14],
+        [3,7,11,15],
+        [0,5,10,15],
+        [12,9,6,3]
     ];
     // looping through all the possible winnning combination of squares
     for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
-        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+        const [a, b, c,d] = lines[i];
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]&&squares[a]===squares[d]) {
             return squares[a];
         }
     }
     return null;
 }
 function checkSqaures(squares) {
-    let count = 0;
-    for (let index = 0; index < squares.length; index++) {
-        if (squares[index] !== null)
-            count++;
+    let c = 0;
+    for (let i = 0; i < squares.length; i++) {
+        if (squares[i] !== null)
+            c++;
     }
-    if (count === 9)
+    if (c === 16)
         return true;
     else
         return false;
 }
-
-/*function TwoDimensional(squares, size) 
-    {
-      var res = []; 
-      for(var i=0;i < squares.length;i = i+size)
-      res.push(squares.slice(i,i+size));
-      return res;
-    }*/
-    function generatesquare(n)
-    {
-        for(let row=1;row<=n;row++)
-        {
-            for(let col=1;col<=n;col++)
-            {
-                return  <div className="board-row">HEllo</div>
-            }
-        }
-    }
