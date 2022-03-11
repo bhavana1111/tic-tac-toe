@@ -16,11 +16,9 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            squares: Array(9).fill(null),//
-            //mat:TwoDimensional(this.state.squares,3),
+            squares: Array(9).fill(null),
             xIsNext: true,
         };
-        console.log(this.state.mat);
     }
    
 
@@ -46,6 +44,7 @@ class Board extends React.Component {
     }
 
     render() {
+        //createList(3);
         const winner = calculateWinner(this.state.squares);
         let status;
         if (winner) {
@@ -59,13 +58,12 @@ class Board extends React.Component {
         }
 
         //const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-        const n=3;
         return (
             
             <div>
                 <div className="status">{status}</div>
-                {generatesquare(3)}
-                </div>
+                <div>{generate()}</div>
+            </div>
         );
     }
 }
@@ -93,16 +91,7 @@ ReactDOM.render(
     document.getElementById('root')
 );
 function calculateWinner(squares) {
-    const lines = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-    ];
+    const lines = createList(3);
     // looping through all the possible winnning combination of squares
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
@@ -131,13 +120,80 @@ function checkSqaures(squares) {
       res.push(squares.slice(i,i+size));
       return res;
     }*/
-    function generatesquare(n)
-    {
-        for(let row=1;row<=n;row++)
-        {
-            for(let col=1;col<=n;col++)
-            {
-                return  <div className="board-row">HEllo</div>
-            }
+   function createMatrix(numberofElements)
+   {
+       let i=0;
+       const matrix = new Array(numberofElements).fill(0).map(() => new Array(numberofElements).fill(0)); 
+       for(let row=0;row<numberofElements;row++)
+       {
+           for(let col=0;col<numberofElements;col++)
+           {
+               matrix[row][col]=i;
+               console.log(i);
+               i++;
+           }
+       }
+       return matrix;
+   }
+function createList(numberofElements) {
+    const mat = createMatrix(numberofElements);
+    const outerList = [];
+    //adding rows in the list
+    for (let row = 0; row < numberofElements; row++) {
+        let innerList = [];
+        for (let col = 0; col < numberofElements; col++) {
+            innerList.push(mat[row][col]);
+        }
+        outerList.push(innerList);
+    }
+    //adding rows in the outerlist
+    for (let row = 0; row < numberofElements; row++) {
+        let innerList = [];
+        for (let col = 0; col < numberofElements; col++) {
+            innerList.push(mat[col][row]);
+        }
+        outerList.push(innerList);
+    }
+    //adding diagonals right
+    let innerList = [];
+    for (let row = 0; row < numberofElements; row++) {
+        for (let col = 0; col < numberofElements; col++) {
+            if (row === col) { innerList.push(mat[row][col]); }
         }
     }
+    outerList.push(innerList);
+    innerList = [];
+    for (let row = 0; row < numberofElements; row++) {
+        for (let col = 0; col < numberofElements; col++) {
+            if (row + col === numberofElements - 1)
+                innerList.push(mat[row][col]);
+        }
+    }
+    return outerList;
+}
+
+function generateRow(n)
+{
+    const b=new Board();
+    let li=[];
+for(let row=0;row<3;row++)
+{
+    li.push(<div id="{row+(3*n)}">{b.renderSquare(row+(3*n))}</div>);
+    console.log(row+(3*n));
+    //console.log(n);
+    //
+}
+return li;
+}
+
+function generate()
+{
+let li=[];
+for(let row=0;row<3;row++)
+{
+    li.push(<div className="board-row">{generateRow(row)}</div>);
+    //console.log(row);
+}
+return li;
+}
+
