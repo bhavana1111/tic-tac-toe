@@ -3,8 +3,9 @@ import React  from "react";
 class Board extends React.Component {
     constructor(props) {
         super(props);
+        let cells=5;
         this.state = {
-            squares: Array(16).fill(null),
+            squares: Array(cells*cells).fill(null),
             xIsNext: true,
         };
     }
@@ -31,21 +32,21 @@ class Board extends React.Component {
             />
         );
     }
-     generateRow(n) {
+     generateRow(cells,n) {
         let li = [];
-        for (let row = 0; row < 3; row++) {
+        for (let row = 0; row < cells; row++) {
     
-            li.push(<div>{this.renderSquare(row + (3 * n))}</div>);
-            console.log(row + (3 * n));
+            li.push(<div>{this.renderSquare(row + (cells * n))}</div>);
+           // console.log(row + (3 * n));
             //console.log(n);
             //
         }
         return li;
     }
-     generate() {
+     generate(cells) {
         let li = [];
-        for (let row = 0; row < 3; row++) {
-            li.push(<div className="board-row">{this.generateRow(row)}</div>);
+        for (let row = 0; row < cells; row++) {
+            li.push(<div className="board-row">{this.generateRow(cells,row)}</div>);
             //console.log(row);
         }
         return li;
@@ -53,65 +54,73 @@ class Board extends React.Component {
 
     render() {
         //createList(3);
-        const winner = calculateWinner(this.state.squares);
+       let cells=5;
+        const winner = calculateWinner(this.state.squares,cells);
         let status;
         if (winner) {
             status = 'Winner: ' + winner;
         }
-        else if (checkSqaures(this.state.squares)) {
+        else if (checkSqaures(this.state.squares,cells*cells)) {
             status = 'Draw No more moves';
         }
         else {
             status = 'Next Player:' + (this.state.xIsNext ? 'X' : 'O');
         }
+        
 
         //const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         return (
 
             <div>
+                 <input type="text" placeholder="Enter the number"/>
                 <div className="status">{status}</div>
-                <div>{this.generate()}</div>
+                <div>{this.generate(5,5)}</div>
             </div>
         );
     }
 }
-function calculateWinner(squares) {
-    const lines = createList(3);
+function calculateWinner(squares,number) {
+    const lines = createList(number);
+    console.log(lines);
     // looping through all the possible winnning combination of squares
     for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
-        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
+      let arr=new Array(number);
+      let count=0;
+      arr=lines[i];
+        for(let check=0;check<arr.length;check++)
+        {
+            if(squares[arr[0]]===squares[arr[check]])
+            count++;
+            else 
+            break;
         }
+       
+        if (count===number) {
+            return squares[arr[0]];
+        }
+       /* if(squares[a]&&squares[a]===squares[b]&&squares[a]===squares[c])
+        return squares[a];*/
     }
     return null;
 }
-function checkSqaures(squares) {
+function checkSqaures(squares,number) {
     let count = 0;
     for (let index = 0; index < squares.length; index++) {
         if (squares[index] !== null)
             count++;
     }
-    if (count === 9)
+    if (count === number)
         return true;
     else
         return false;
 }
 
-/*function TwoDimensional(squares, size) 
-    {
-      var res = []; 
-      for(var i=0;i < squares.length;i = i+size)
-      res.push(squares.slice(i,i+size));
-      return res;
-    }*/
 function createMatrix(numberofElements) {
     let i = 0;
     const matrix = new Array(numberofElements).fill(0).map(() => new Array(numberofElements).fill(0));
     for (let row = 0; row < numberofElements; row++) {
         for (let col = 0; col < numberofElements; col++) {
             matrix[row][col] = i;
-            console.log(i);
             i++;
         }
     }
