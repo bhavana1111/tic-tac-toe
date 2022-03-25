@@ -1,10 +1,10 @@
 import React  from "react";
-
 class Board extends React.Component {
     constructor(props) {
         super(props);
-        let cells=5;
+        let cells=3;
         this.state = {
+            text:"",
             squares: Array(cells*cells).fill(null),
             xIsNext: true,
         };
@@ -54,7 +54,7 @@ class Board extends React.Component {
 
     render() {
         //createList(3);
-       let cells=5;
+       let cells=3;
         const winner = calculateWinner(this.state.squares,cells);
         let status;
         if (winner) {
@@ -72,9 +72,8 @@ class Board extends React.Component {
         return (
 
             <div>
-                 <input type="text" placeholder="Enter the number"/>
                 <div className="status">{status}</div>
-                <div>{this.generate(5,5)}</div>
+                <div>{this.generate(3,3)}</div>
             </div>
         );
     }
@@ -86,7 +85,7 @@ function calculateWinner(squares,number) {
     for (let i = 0; i < lines.length; i++) {
       let arr=new Array(number);
       let count=0;
-      arr=lines[i];
+      arr=lines[i];//
         for(let check=0;check<arr.length;check++)
         {
             if(squares[arr[0]]===squares[arr[check]])
